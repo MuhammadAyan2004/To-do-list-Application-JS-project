@@ -9,10 +9,12 @@ const addTodo=()=>{
     if(inputText.length<=0){
         alert("you must right something");
         return false;
+        
     }else if(addBtn.value==="Edit"){
     editTodo.target.previousElementSibling.innerHTML = inputText;
     addBtn.value="Add";
-    input.value="";        
+    input.value="";  
+
     }else{
         // creating p tag
     const li = document.createElement("li");
@@ -38,9 +40,12 @@ const addTodo=()=>{
 };
 
 const updateTodo = (e)=>{
+
     if( e.target.innerHTML ==="remove"){
+    
         todo.removeChild(e.target.parentElement);
     }else if(e.target.innerHTML ==="Edit"){
+        
         input.value = e.target.previousElementSibling.innerHTML;
         input.focus();
         addBtn.value="Edit";
