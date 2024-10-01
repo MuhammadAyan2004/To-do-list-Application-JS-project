@@ -9,9 +9,9 @@ html,body{
     height: 100%;
 }
 .container{
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background:linear-gradient(145deg, blue,red) ;
 }
