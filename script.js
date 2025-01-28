@@ -1,50 +1,62 @@
-const input = document.getElementById("inputBox");
-const addBtn = document.getElementById("addBtn");
-const todo = document.getElementById("todoList");
+const input = document.getElementById("addTask");
+const addBtn = document.getElementById("add");
+const task = document.getElementById("task");
+
 let editTodo = null;
-const addTodo = ()=>{
-    const inputText = input.value.trim();
-    if(input.value === ""){
-        alert("please write something ");
-        return false;
-    }else if(addBtn.value==="Edit"){
-        editTodo.target.previousElementSibling.innerHTML=inputText;
-        addBtn.value="Add";
-        input.value="";
-    }else{
-        //create p tag
-        const li = document.createElement("li");
+
+const todo = ()=>{
+    const value = input.value.trim();
+    if(value === ""){
+        alert("write something to add")
+    }else if(addBtn.innerText === "Edit"){ 
+        editTodo.target.parentElement.querySelector("p").innerHTML= input.value;
+        addBtn.innerHTML = "Add"
+        input.value = "";
+    }else {
+        const li = document.createElement("li")
         const p = document.createElement("p");
-        p.innerHTML=inputText;
+        p.innerHTML = value;
         li.appendChild(p);
-        todo.appendChild(li);
-        input.value="";
-        // create edit button
-        const edit = document.createElement("button")
-        edit.innerText="Edit";
-        edit.classList.add("editBtn")
+
+        const edit = document.createElement("button");
+        edit.classList.add("edit");
+        edit.innerHTML = "Edit";
         li.appendChild(edit);
-        // create delete button
-        const del = document.createElement("button")
-        del.innerText="Remove";
-        del.classList.add("delBtn")
+        
+        const del = document.createElement("button");
+        del.classList.add("del");
+        del.innerHTML = "remove";
         li.appendChild(del);
+        
+        task.append(li)
     }
-};
-const updateTodo = (e)=>{
-    if(e.target.innerHTML==="Remove"){
-        todo.removeChild(e.target.parentElement);
-    }else if (e.target.innerHTML==="Edit"){
-        input.value=e.target.previousElementSibling.innerHTML;
-        input.focus();
-        addBtn.value="Edit";
-        editTodo=e;
-    }
+    input.value = "";
+    saveData()
 }
-addBtn.addEventListener("click",addTodo);
-input.addEventListener("keydown", function(event) {
-    if (event.key === 'Enter') {
-        addTodo();
+task.addEventListener("click",function(e){
+    if(e.target.tagName === "LI"){
+        e.target.classList.toggle("checked");
+        saveData()
+    }else if(e.target.innerHTML === "remove"){
+        e.target.parentElement.remove();
+        saveData()
+    }else if(e.target.innerText === "Edit"){
+        input.value =e.target.parentElement.querySelector("p").innerHTML;
+        input.focus();
+        addBtn.innerHTML = "Edit"
+        editTodo = e;
+        saveData()
     }
-});
-todo.addEventListener("click",updateTodo);
+},false)
+input.addEventListener("keydown",(e)=>{
+    if(e.key === "Enter"){
+        todo()
+    }
+})
+function saveData(){
+    localStorage.setItem("data",task.innerHTML)
+}
+function showList(){
+    task.innerHTML = localStorage.getItem("data")
+}
+showList()
